@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1054961404723",
+    "project_id": "final-project-73d48",
+    "storage_bucket": "final-project-73d48.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1054961404723:android:920aa8c70aac1b81774c46",
+        "android_client_info": {
+          "package_name": "com.shaihi.firebase_example"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYgoe3SSKUwBcmBX1vxFKdIUcoCOcZVDk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
