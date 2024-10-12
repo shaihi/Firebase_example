@@ -107,17 +107,31 @@ public class LoginActivity extends AppCompatActivity {
 
     // This method validates that the email and password inputs are not empty
     private boolean validateInputs(String email, String password) {
-        // Check if the email is empty
-        if (TextUtils.isEmpty(email)) {
-            Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
+        // Regular expression for valid email pattern
+        String emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
+
+        // Regular expression for a strong password pattern
+        String passwordPattern = "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*_-]).{8,}$";
+
+        // Check if email matches the valid pattern
+        if (!email.matches(emailPattern)) {
+            Toast.makeText(this, "Please enter a valid email", Toast.LENGTH_SHORT).show();
             return false;
         }
-        // Check if the password is empty
+
+        // Check if password is empty
         if (TextUtils.isEmpty(password)) {
             Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
             return false;
         }
-        // Both email and password are not empty, return true
+
+        // Check if password matches the strong password pattern
+        if (!password.matches(passwordPattern)) {
+            Toast.makeText(this, "Password must be at least 8 characters long, include one uppercase letter, one lowercase letter, one number, and one special character (!@#$%^&*_-)", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        // Both email and password are valid
         return true;
     }
 }
