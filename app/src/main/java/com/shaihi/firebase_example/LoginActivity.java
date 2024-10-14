@@ -1,4 +1,5 @@
 package com.shaihi.firebase_example;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -59,9 +60,9 @@ public class LoginActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         // Sign-up successful, get the newly created user
                                         FirebaseUser user = mAuth.getCurrentUser();
-                                        Toast.makeText(LoginActivity.this, "Sign Up Successful.", Toast.LENGTH_SHORT).show();
-                                        // You can add code here to navigate to another activity or perform further actions
-
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                        finish(); // Close the login activity
                                     } else {
                                         // Sign-up failed, show the error message
                                         Toast.makeText(LoginActivity.this, "Sign Up Failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
@@ -91,9 +92,9 @@ public class LoginActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         // Login successful, get the currently signed-in user
                                         FirebaseUser user = mAuth.getCurrentUser();
-                                        Toast.makeText(LoginActivity.this, "Login Successful.", Toast.LENGTH_SHORT).show();
-                                        // You can add code here to navigate to another activity or perform further actions
-
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                        finish(); // Close the login activity
                                     } else {
                                         // Login failed, show the error message
                                         Toast.makeText(LoginActivity.this, "Login Failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
