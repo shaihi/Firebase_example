@@ -1,6 +1,9 @@
 package com.shaihi.firebase_example;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -30,5 +33,19 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         TextView tv = findViewById(R.id.helloText);
         tv.setText("Hello + " +mAuth.getCurrentUser().getEmail());
+
+        Button btnLogout = findViewById(R.id.logoutButton);
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Sign out the user
+                mAuth.signOut();
+
+                // Redirect to LoginActivity after logout
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 }
