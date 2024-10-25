@@ -12,8 +12,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.w3c.dom.Text;
 
@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         TextView tv = findViewById(R.id.helloText);
         tv.setText("Hello + " +mAuth.getCurrentUser().getEmail());
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         Button btnLogout = findViewById(R.id.logoutButton);
         btnLogout.setOnClickListener(new View.OnClickListener() {
