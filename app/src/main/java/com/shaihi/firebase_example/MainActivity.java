@@ -14,11 +14,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Text;
 
@@ -43,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         tv.setText("Hello + " +mAuth.getCurrentUser().getEmail());
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        saveMessage("Shai is doing a test");
+        fetchMessages();
 
         Button btnLogout = findViewById(R.id.logoutButton);
         btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +89,32 @@ public class MainActivity extends AppCompatActivity {
                     public void onFailure(@NonNull Exception e) {
                         // Failed to save message
                         Toast.makeText(getApplicationContext(), "Error saving message: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    // Define the method to fetch messages from Firestore
+    private void fetchMessages() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Query to get all documents from the "messages" collection
+        db.collection("messages")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            StringBuilder messages = new StringBuilder();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // Access the "message" field and append it to display
+                                String messageText = document.getString("message");
+                                messages.append(messageText).append("\n");
+                            }
+                            // Show the messages in a TextView or a Toast
+                            Toast.makeText(getApplicationContext(), messages.toString(), Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Error getting messages: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
     }
