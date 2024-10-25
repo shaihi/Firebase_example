@@ -5,17 +5,25 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.w3c.dom.Text;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         tv.setText("Hello + " +mAuth.getCurrentUser().getEmail());
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        saveMessage("Shai is doing a test");
 
         Button btnLogout = findViewById(R.id.logoutButton);
         btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -49,5 +58,34 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    // Define the method to save a message to Firestore
+    private void saveMessage(String messageText) {
+        // Reference to Firestore database
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Create a new document with data to store
+        Map<String, Object> messageData = new HashMap<>();
+        messageData.put("message", messageText); // Key-value pair to store in Firestore, the key is "message" and the value is messageText
+        messageData.put("timestamp", System.currentTimeMillis()); // Add a timestamp
+
+        // Save the message to a "messages" collection
+        db.collection("messages")
+                .add(messageData)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        // Message saved successfully
+                        Toast.makeText(getApplicationContext(), "Message saved!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Failed to save message
+                        Toast.makeText(getApplicationContext(), "Error saving message: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 }
